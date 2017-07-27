@@ -56,7 +56,11 @@ class SettingView extends Component{
                 {/*输入推流地址框*/}
                 <Image source={require('../img/background.png')} style={styles.streamImg}>
                     <Image source={require('../img/url_background.png')} style={styles.urlImg}>
-                        <TextInput onChangeText={(text)=>this.setState({url:text})} placeholder={'请输入推流地址'} style={styles.inputStyle}/>
+                        <TextInput onChangeText={(text)=>this.setState({url:text})}
+                                   placeholder={'请输入推流地址'}
+                                   multiline={true}
+                                   numberOfLines={3}
+                                   style={styles.inputStyle}/>
                     </Image>
                 </Image>
 

@@ -86,7 +86,7 @@ RCT_EXPORT_METHOD(start:(NSString *)url resolution:(NSString*)resolution directi
 RCT_EXPORT_METHOD(onBack) {
     NSLog(@"onBack");
     self.isBacking = YES;
-//    BOOL result = [self.model back];
+    BOOL result = [self.model back];
 }
 
 RCT_REMAP_METHOD(onToggleFlash,

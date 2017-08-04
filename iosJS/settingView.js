@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import StreamView from './streamView';
 import StreamViewLandScape from './streamViewLandScape';
+import PlayView from './playView';
 var screen = require('Dimensions').get('window');
 var ppi = require('PixelRatio').get();
 var scale = screen.width/375;//在6P上需要加入ppi的计算scale = screen.width*ppi/375/2，但在模拟器上看不出差别
@@ -37,6 +38,7 @@ class SettingView extends Component{
         this.pressButton = this.pressButton.bind(this);
         this.pressDirectionButton = this.pressDirectionButton.bind(this);
         this.pressPushButton = this.pressPushButton.bind(this);
+        this.pressPlayButton = this.pressPlayButton.bind(this);
         this.gotoPortraitView = this.gotoPortraitView.bind(this);
         this.gotoLandscapeView = this.gotoLandscapeView.bind(this);
         this.state = {
@@ -101,12 +103,20 @@ class SettingView extends Component{
                         </View>
                     </TouchableOpacity>
                 </View>
-
-                {/*推流按钮*/}
-                <TouchableOpacity onPress={()=>this.pressPushButton()}>
-                    <Image source={require('../img/start_stream.png')} style={styles.pushButton}/>
-                </TouchableOpacity>
-
+                <View style={styles.buttonView}>
+                    {/*推流按钮*/}
+                    <TouchableOpacity onPress={()=>this.pressPushButton()}>
+                        <View style={styles.pushButton}>
+                            <Text>我要直播</Text>
+                        </View>
+                    </TouchableOpacity>
+                    {/*播放按钮*/}
+                    <TouchableOpacity onPress={()=>this.pressPlayButton()}>
+                        <View style={styles.pushButton}>
+                            <Text>我要看直播</Text>
+                        </View>
+                    </TouchableOpacity>
+            </View>
             </View>
         )}
 
@@ -131,6 +141,19 @@ class SettingView extends Component{
         } else {
             this.gotoLandscapeView();
         }
+    }
+
+    pressPlayButton(){
+        console.log('点击了播放按钮');
+        this.props.navigator.push({
+                component: PlayView,
+                title: '播放',
+                navigationBarHidden:true,
+                passProps: {
+                    url:this.state.url
+                }
+            }
+        );
     }
 
     gotoPortraitView(){
@@ -245,9 +268,20 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center'
     },
-    pushButton:{
+    buttonView:{
         marginTop:100*scale,
-        height:200*scale,
-        width:200*scale
+        flexDirection:'row',
+        justifyContent:'space-around',
+        alignItems:'center',
+        width:screen.width
+    },
+    pushButton:{
+        height:120*scale,
+        width:120*scale,
+        borderRadius:60*scale,
+        borderWidth:2,
+        borderColor:'#1475ea',
+        justifyContent:'center',
+        alignItems:'center'
     }
 });

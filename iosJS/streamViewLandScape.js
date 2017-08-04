@@ -13,7 +13,7 @@ import {
 
 var screen = require('Dimensions').get('window');
 var scale = screen.width/375;
-import ZYLiveBackGroundView from './myView';
+import ZYLiveBackGroundView from './nativeStreamView';
 
 var myModule = NativeModules.ZYLiveBackGroundViewManager;
 
@@ -26,25 +26,27 @@ export default class StreamViewLandScape extends Component {
         this.clickBeauty = this.clickBeauty.bind(this);
         this.clickStart = this.clickStart.bind(this);
         this.state = {
-            flash:0,
-            camera:0,
-            beauty:0,
-            steam:0
+            flash:false,
+            camera:false,
+            beauty:false,
+            steam:false
         }
+        this.setupNativeComponent();
     }
-
-    render(){
+    setupNativeComponent(){
         console.log('这是水平页');
         console.log('directionButtonTag:',this.props.directionButtonTag);
         console.log('resolutionButtonTag:',this.props.resolutionButtonTag);
         console.log('url:',this.props.url);
         myModule.start(this.props.url,this.props.resolutionButtonTag.toString(),this.props.directionButtonTag.toString());
+    }
+    render(){
 
         return(
             <ZYLiveBackGroundView style={styles.background}>
                 <View style={styles.downView}>
                     <TouchableOpacity onPress={()=>this.clickStart()}>
-                        <Image source={require('../img/stream_background.png')} style={styles.videoImgStyle}></Image>
+                        <Image source={(!this.state.steam ) ? require('../img/stream.png') :require('../img/streaming.png')} style={styles.videoImgStyle}></Image>
                     </TouchableOpacity>
                 </View>
 
@@ -78,42 +80,75 @@ export default class StreamViewLandScape extends Component {
         this.props.navigator.pop();
     }
 
+
     async clickFlash(){
         console.log('点击闪光灯');
-
-        try {
-            var events = myModule.onToggleFlash();
-            console.log('闪光灯成功');
-            this.setState({
-                flash:1
-            });
-        } catch(e) {
-            console.error(e);
-        }
+        var that = this;
+        var events = myModule.onToggleFlash();
+        events.then(function (events){
+            console.log("进入then  events is ", events);
+            if(events == '闪光灯打开'){
+                that.setState({
+                    flash:1
+                });
+            } else {
+                that.setState({
+                    flash:0
+                });
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 
-    clickSwitch(){
+    async clickSwitch(){
         console.log('点击转换相机');
-        myModule.onSwitchCamera();
+        var events = myModule.onSwitchCamera();
+        // events.then(function (events){
+        //     console.log("转换相机方向成功 ", events);
+        // }).catch(function (error) {
+        //     console.log(error);
+        // });
     }
 
     async clickBeauty(){
         console.log('点击美颜');
-        try {
-            var events = myModule.onBeauty();
-            console.log('美颜成功');
-            this.setState({
-                beauty:1
-            });
-        } catch(e) {
-            console.error(e);
-        }
-
+        var that = this;
+        var events = myModule.onBeauty();
+        events.then(function (events){
+            console.log("进入then  events is ", events);
+            if(events == '正在美颜'){
+                that.setState({
+                    beauty:1
+                });
+            } else {
+                that.setState({
+                    beauty:0
+                });
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 
-    clickStart(){
+    async clickStart(){
         console.log('点击开始录制');
-        myModule.onToggleStream();
+        var that = this;
+        var events = myModule.onToggleStream();
+        events.then(function (events){
+            console.log("进入then  events is ", events);
+            if(events == '正在推流'){
+                that.setState({
+                    steam:1
+                });
+            } else {
+                that.setState({
+                    steam:0
+                });
+            }
+        }).catch(function (error) {
+            console.log(error);
+        });
     }
 }
 const styles = StyleSheet.create({

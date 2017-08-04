@@ -61,7 +61,7 @@ RCT_EXPORT_METHOD(start:(NSString *)url resolution:(NSString*)resolution directi
     //设置session的参数，即将选择的上述参数设置好
     
     SettingViewModel *setVM = [[SettingViewModel alloc] init];
-    setVM.url = url;
+    setVM.url = @"rtmp://push.bcelive.com/live/yvwslfyqf9lgyfnnsy";
     setVM.resolution = (Resolution)resolution.intValue;
     setVM.direction = (Direction)direction.intValue;
     
@@ -86,19 +86,19 @@ RCT_EXPORT_METHOD(start:(NSString *)url resolution:(NSString*)resolution directi
 RCT_EXPORT_METHOD(onBack) {
     NSLog(@"onBack");
     self.isBacking = YES;
-    BOOL result = [self.model back];
+    [self.model back];
 }
 
 RCT_REMAP_METHOD(onToggleFlash,
                  onToggleFlashWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject) {
-    NSLog(@"onToggleFlash");
+    
     BOOL toggle = [self.model toggleTorch];
+    NSLog(@"onToggleFlash %d",toggle);
     if (toggle) {
-        resolve(@"开启闪光灯成功");
+        resolve(@"闪光灯打开");
     } else {
-        NSError *error = [NSError errorWithDomain:@"native error" code:1 userInfo:nil];
-        reject(@"failed",@"开启闪光灯失败",error);
+        resolve(@"闪光灯关闭");
     }
 }
 
@@ -113,22 +113,21 @@ RCT_REMAP_METHOD(onBeauty,
     NSLog(@"onBeauty");
     BOOL toggle = [self.model toggleBeauty];
     if (toggle) {
-        resolve(@"美颜成功");
+        resolve(@"正在美颜");
     } else {
-        NSError *error = [NSError errorWithDomain:@"native error" code:1 userInfo:nil];
-        reject(@"failed",@"美颜失败",error);
+        resolve(@"关闭美颜");
     }
 }
 
 RCT_REMAP_METHOD(onToggleStream,onToggleStreamWithResolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject) {
-    NSLog(@"onToggleStream");
+    
     BOOL toggle = [self.model toggleStream];
+    NSLog(@"onToggleStream %d",toggle);
     if (toggle) {
-        resolve(@"推流成功");
+        resolve(@"正在推流");
     } else {
-        NSError *error = [NSError errorWithDomain:@"native error" code:1 userInfo:nil];
-        reject(@"failed",@"推流失败",error);
+        resolve(@"关闭推流");
     }
 }
 

@@ -11,6 +11,9 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "TestViewController.h"
+//#import <BaiduMobileAPM/BaiduMobileAPM.h>
+
+#import "TestStreamViewController.h"
 @interface AppDelegate ()
 
 @end
@@ -20,11 +23,23 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     MainViewController *myVC = [[MainViewController alloc] init];
     self.window.rootViewController = myVC;
     [self.window makeKeyAndVisible];
+    
+    
+//    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//    TestStreamViewController *myVC = [[TestStreamViewController alloc] init];
+//    self.window.rootViewController = myVC;
+//    [self.window makeKeyAndVisible];
+    
+//    TestViewController *test = [[TestViewController alloc] init];
+//    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+//    self.window.rootViewController = test;
+//    [self.window makeKeyAndVisible];
     return YES;
 }
 

@@ -62,7 +62,9 @@ class SettingView extends Component{
                                    placeholder={'请输入推流地址'}
                                    multiline={true}
                                    numberOfLines={3}
-                                   style={styles.inputStyle}/>
+                                   style={styles.inputStyle}
+                                   blurOnSubmit={true}
+                                   returnKeyType="done"/>
                     </Image>
                 </Image>
 

@@ -6,8 +6,8 @@
 //  Copyright © 2017年 zhaoyuanyuan. All rights reserved.
 //
 
-#import <React/React.h>
-
-@interface IMCloud : RCTEventEmitter
+#import <React/RCTEventEmitter.h>
+#import <React/RCTBridge.h>
+@interface IMCloud : RCTEventEmitter<RCTBridgeModule>
 
 @end

@@ -17,4 +17,6 @@ target 'LiveDemo' do
     ]
     pod "Yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
     pod 'BaiduBCECapture', "~> 2.0"
+    pod 'BaiduBCEPlayerLSS', "2.0.0"
+    pod 'RongCloudIM', "~> 2.8.14"
 end

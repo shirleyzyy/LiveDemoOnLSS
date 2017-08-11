@@ -21,8 +21,10 @@
     self.view.backgroundColor = [UIColor whiteColor];
     NSURL *jsCodeLocation;
 //    jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+    //打包后获取离线bundle
+    jsCodeLocation = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"index.ios.jsbundle" ofType:nil]];
     //此处的地址为将手机与电脑连接至同一网络环境下时的电脑IP
-    jsCodeLocation = [NSURL URLWithString:@"http://192.168.10.27:8081/index.ios.bundle?platform=ios&dev=true"];
+//    jsCodeLocation = [NSURL URLWithString:@"http://192.168.10.33:8081/index.ios.bundle?platform=ios&dev=true"];
     RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation moduleName:@"RNLive" initialProperties:nil launchOptions:nil];
     rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
     self.view = rootView;

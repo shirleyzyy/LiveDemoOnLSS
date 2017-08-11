@@ -19,7 +19,6 @@ import ZYPlayerView from './nativePlayView';
 var playerModule = NativeModules.ZYPlayerViewManager;
 var imModule = NativeModules.IMCloud;
 var im = new NativeEventEmitter(imModule);
-var num = '1';
 var arr = [''];
 export default class PlayView extends Component{
     constructor(props){
@@ -31,7 +30,7 @@ export default class PlayView extends Component{
                 'name':'',
                 'message':''
             }
-        }
+        };
         this.clickBack = this.clickBack.bind(this);
         this.scrollToEnd = this.scrollToEnd.bind(this);
         this.inputFinish = this.inputFinish.bind(this);
@@ -56,7 +55,7 @@ export default class PlayView extends Component{
     }
 
     componentWillUnmount(){
-        im.remove();
+        // im.remove();
     }
 
     render(){
@@ -174,7 +173,7 @@ var styles = StyleSheet.create({
         height:200
     },
     textInputStyle:{
-        backgroundColor:'yellow',
+        backgroundColor:'white',
         height:20,
         width:screen.width/3*2-40,
         borderColor:'#bbaadd',
@@ -188,7 +187,7 @@ var styles = StyleSheet.create({
     },
     inputButton:{
         width:40,
-        backgroundColor:'#ddffaa',
+        backgroundColor:'#C6E2FF',
         textAlign:'center',
         height:20,
         textAlignVertical:'center'

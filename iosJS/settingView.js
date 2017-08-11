@@ -59,7 +59,7 @@ class SettingView extends Component{
                 <Image source={require('../img/background.png')} style={styles.streamImg}>
                     <Image source={require('../img/url_background.png')} style={styles.urlImg}>
                         <TextInput onChangeText={(text)=>this.setState({url:text})}
-                                   placeholder={'请输入推流地址'}
+                                   placeholder={'请输入推流或播放地址,默认推流地址为rtmp://push.bcelive.com/live/yvwslfyqf9lgyfnnsy'}
                                    multiline={true}
                                    numberOfLines={3}
                                    style={styles.inputStyle}
@@ -206,7 +206,9 @@ const styles = StyleSheet.create({
     inputStyle:{
         marginLeft:10,
         marginRight:10,
-        height:100*scale
+        height:100*scale,
+        marginTop:40,
+        fontSize:15
     },
     resolutionView:{
         height:60*scale,

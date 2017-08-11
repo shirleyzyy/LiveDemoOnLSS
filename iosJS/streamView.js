@@ -8,6 +8,8 @@ import {
     Image,
     TouchableOpacity,
     StyleSheet,
+    ListView,
+    NativeEventEmitter,
     NativeModules
 } from 'react-native';
 
@@ -16,7 +18,9 @@ var scale = screen.width/375;
 import ZYLiveBackGroundView from './nativeStreamView';
 
 var myModule = NativeModules.ZYLiveBackGroundViewManager;
-
+var imModule = NativeModules.IMCloud;
+var im = new NativeEventEmitter(imModule);
+var arr = [''];
 export default class StreamView extends Component {
     constructor(props){
         super(props);
@@ -25,14 +29,36 @@ export default class StreamView extends Component {
         this.clickSwitch = this.clickSwitch.bind(this);
         this.clickBeauty = this.clickBeauty.bind(this);
         this.clickStart = this.clickStart.bind(this);
+        this.renderMessages = this.renderMessages.bind(this);
+        this.receiveMessage = this.receiveMessage.bind(this);
+        var ds = new ListView.DataSource({rowHasChanged:(r1,r2) => {r1 !== r2}});
         this.state = {
             flash:false,
             camera:false,
             beauty:false,
-            steam:false
+            steam:false,
+            dataSource:ds,
+            inputText:{
+                'name':'',
+                'message':''
+            }
         }
         this.setupNativeComponent();
+        imModule.startRongYunIM();
     }
+
+    componentDidMount(){
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows(arr)
+        });
+        console.log('添加观察者');
+        im.addListener(
+            'EventReminder',
+            (data) => this.receiveMessage(data.userId , data.message),
+            this
+        );
+    }
+
     setupNativeComponent(){
         console.log('这是竖直页');
         console.log('directionButtonTag:',this.props.directionButtonTag);
@@ -62,6 +88,12 @@ export default class StreamView extends Component {
                   </View>
               </View>
               <View style={styles.downView}>
+                  <View style={styles.messageView}>
+                      <ListView dataSource={this.state.dataSource}
+                                renderRow={this.renderMessages}
+                                ref='messages'
+                      ></ListView>
+                  </View>
                   <TouchableOpacity onPress={()=>this.clickStart()}>
                       <Image source={(!this.state.steam ) ? require('../img/stream.png') :require('../img/streaming.png')} style={styles.videoImgStyle}></Image>
                   </TouchableOpacity>
@@ -69,6 +101,30 @@ export default class StreamView extends Component {
           </ZYLiveBackGroundView>
       )
   };
+
+    renderMessages(data){
+        console.log('进入renderMessage'+data);
+        if ( data == '' ){
+            return (<Text>{data}</Text>);
+        } else {
+            return(<Text style={styles.textStyle}>{data.name +':'+ data.message}</Text>);
+        }
+    }
+
+    receiveMessage(name,text){
+        //收到消息刷新界面
+        console.log('收到消息刷新界面'+name+'：'+text);
+        this.setState({
+            inputText:{
+                name:name,
+                message:text
+            }
+        });
+        arr.push(this.state.inputText);
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows(arr)
+        });
+    }
 
   clickBack(){
       console.log('点击返回');
@@ -163,8 +219,9 @@ const styles = StyleSheet.create({
     downView:{
         backgroundColor:'transparent',
         width:screen.width,
-        height:130*scale,
-        justifyContent:'center',
+        height:250*scale,
+        justifyContent:'space-between',
+        alignItems:'center',
         flexDirection:'row'
     },
     imgStyle:{
@@ -183,5 +240,13 @@ const styles = StyleSheet.create({
         height:50,
         flexDirection:'row',
         justifyContent:'flex-end'
+    },
+    messageView:{
+        backgroundColor:'rgba(105,105,105,0.5)',
+        height:230*scale,
+        width:screen.width/3*2
+    },
+    textStyle:{
+        color:'white'
     }
 })

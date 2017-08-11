@@ -8,7 +8,9 @@ import {
     Image,
     TouchableOpacity,
     StyleSheet,
-    NativeModules
+    NativeModules,
+    ListView,
+    NativeEventEmitter,
 } from 'react-native';
 
 var screen = require('Dimensions').get('window');
@@ -17,6 +19,9 @@ import ZYLiveBackGroundView from './nativeStreamView';
 
 var myModule = NativeModules.ZYLiveBackGroundViewManager;
 
+var imModule = NativeModules.IMCloud;
+var im = new NativeEventEmitter(imModule);
+var arr = [''];
 export default class StreamViewLandScape extends Component {
     constructor(props){
         super(props);
@@ -25,14 +30,38 @@ export default class StreamViewLandScape extends Component {
         this.clickSwitch = this.clickSwitch.bind(this);
         this.clickBeauty = this.clickBeauty.bind(this);
         this.clickStart = this.clickStart.bind(this);
+        this.renderMessages = this.renderMessages.bind(this);
+        this.receiveMessage = this.receiveMessage.bind(this);
+        this.scrollToEnd = this.scrollToEnd.bind(this);
+        var ds = new ListView.DataSource({rowHasChanged:(r1,r2) => {r1 !== r2}});
         this.state = {
             flash:false,
             camera:false,
             beauty:false,
-            steam:false
+            steam:false,
+            dataSource:ds,
+            inputText:{
+                'name':'',
+                'message':''
+            }
         }
         this.setupNativeComponent();
+        imModule.startRongYunIM();
     }
+
+    componentDidMount(){
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows(arr)
+        });
+        setTimeout(this.scrollToEnd,500);
+        console.log('添加观察者');
+        im.addListener(
+            'EventReminder',
+            (data) => this.receiveMessage(data.userId , data.message),
+            this
+        );
+    }
+
     setupNativeComponent(){
         console.log('这是水平页');
         console.log('directionButtonTag:',this.props.directionButtonTag);
@@ -40,11 +69,17 @@ export default class StreamViewLandScape extends Component {
         console.log('url:',this.props.url);
         myModule.start(this.props.url,this.props.resolutionButtonTag.toString(),this.props.directionButtonTag.toString());
     }
-    render(){
 
+    render(){
         return(
             <ZYLiveBackGroundView style={styles.background}>
                 <View style={styles.downView}>
+                    <View style={styles.messageView}>
+                        <ListView dataSource={this.state.dataSource}
+                                  renderRow={this.renderMessages}
+                                  ref='messages'
+                        ></ListView>
+                    </View>
                     <TouchableOpacity onPress={()=>this.clickStart()}>
                         <Image source={(!this.state.steam ) ? require('../img/stream.png') :require('../img/streaming.png')} style={styles.videoImgStyle}></Image>
                     </TouchableOpacity>
@@ -73,6 +108,34 @@ export default class StreamViewLandScape extends Component {
             </ZYLiveBackGroundView>
         )
     };
+
+    renderMessages(data){
+        if ( data == '' ){
+            return (<Text>{data}</Text>);
+        } else {
+            return(<Text style={styles.textStyle}>{data.name +':'+ data.message}</Text>);
+        }
+    }
+
+    receiveMessage(name,text){
+        //收到消息刷新界面
+        console.log('收到消息刷新界面'+name+'：'+text);
+        this.setState({
+            inputText:{
+                name:name,
+                message:text
+            }
+        });
+        arr.push(this.state.inputText);
+        this.setState({
+            dataSource:this.state.dataSource.cloneWithRows(arr)
+        });
+        setTimeout(this.scrollToEnd,500);
+    }
+
+    scrollToEnd(){
+        this.refs.messages.scrollToEnd({animated: true});
+    }
 
     clickBack(){
         console.log('点击返回');
@@ -168,9 +231,10 @@ const styles = StyleSheet.create({
     downView:{
         backgroundColor:'transparent',
         height:screen.height,
-        width:100*scale,
-        justifyContent:'center',
-        flexDirection:'column'
+        flexDirection:'column',
+        width:200*scale,
+        justifyContent:'space-between',
+        alignItems:'center'
     },
     backStyle:{
         width:50,
@@ -195,5 +259,14 @@ const styles = StyleSheet.create({
         marginBottom:30*scale,
         flexDirection:'column',
         justifyContent:'flex-end'
+    },
+    messageView:{
+        backgroundColor:'rgba(105,105,105,0.5)',
+        height:200*scale,
+        width:screen.height/3*2,
+        transform:[{rotate:'90deg'}]
+    },
+    textStyle:{
+        color:'white'
     }
 })

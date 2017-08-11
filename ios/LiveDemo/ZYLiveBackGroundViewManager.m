@@ -61,7 +61,12 @@ RCT_EXPORT_METHOD(start:(NSString *)url resolution:(NSString*)resolution directi
     //设置session的参数，即将选择的上述参数设置好
     
     SettingViewModel *setVM = [[SettingViewModel alloc] init];
-    setVM.url = @"rtmp://push.bcelive.com/live/yvwslfyqf9lgyfnnsy";
+    if ([url isEqualToString:@""]){
+        setVM.url = @"rtmp://push.bcelive.com/live/yvwslfyqf9lgyfnnsy";
+    } else {
+        setVM.url = url;
+    }
+    
     setVM.resolution = (Resolution)resolution.intValue;
     setVM.direction = (Direction)direction.intValue;
     

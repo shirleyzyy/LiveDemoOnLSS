@@ -19,12 +19,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor yellowColor];
-    self.viewModel = [[PlayerViewModel alloc] initWithURL:@"http://hf8rads3r2zq4z8yuwm.exp.bcelive.com/lss-hf8rat3avr7vwekq/live.m3u8"
-                                                                title:@"haha"
-                                                         downloadable:NO];
-    [self.viewModel layout:self.view];
-    [self.viewModel start];
-//    [self startRongYunIM];
+//    self.viewModel = [[PlayerViewModel alloc] initWithURL:@"http://hf8rads3r2zq4z8yuwm.exp.bcelive.com/lss-hf8rat3avr7vwekq/live.m3u8"
+//                                                                title:@"haha"
+//                                                         downloadable:NO];
+//    [self.viewModel layout:self.view];
+//    [self.viewModel start];
+    [self startRongYunIM];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -108,11 +108,10 @@ RCT_EXPORT_METHOD(sendRCMessage:(NSString *)text){
 }
 
 - (void)sendMessage:(NSString *)text{
-    RCTextMessage *test = [RCTextMessage messageWithContent:@"哈哈哈哈"];
+    RCTextMessage *test = [RCTextMessage messageWithContent:text];
     test.senderUserInfo = [[RCIMClient sharedRCIMClient] currentUserInfo];
     [[RCIMClient sharedRCIMClient] sendMessage:ConversationType_GROUP targetId:@"001" content:test pushContent:nil pushData:nil success:^(long messageId) {
         NSLog(@"发送消息成功");
-        //TODO：向JS发通知
     } error:^(RCErrorCode nErrorCode, long messageId) {
         NSLog(@"发送消息失败");
     }];

@@ -19,31 +19,6 @@
 @property(nonatomic, strong) StreamingViewModel* model;
 @property (assign, nonatomic) BOOL isBacking;
 @property(nonatomic, strong) ZYBackView *test;
-//方法二：直接调用SDK
-///**
-// *  @brief 百度SDK调用中介
-// */
-//@property(nonatomic, strong) VCSimpleSession* session;
-//
-///**
-// *  @brief 推流地址
-// */
-//@property(nonatomic, copy) NSString* url;
-//
-///**
-// *  @brief 分辨率
-// */
-//@property(nonatomic, assign) Resolution resolution;
-//
-///**
-// *  @brief 方向
-// */
-//@property(nonatomic, assign) Direction direction;
-//
-///**
-// *  @brief 美颜
-// */
-//@property(nonatomic, assign) BOOL beautyEnabled;
 
 @end
 
@@ -77,8 +52,6 @@ RCT_EXPORT_METHOD(start:(NSString *)url resolution:(NSString*)resolution directi
     self.test = [[ZYBackView alloc] init];
     self.test.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     [self.model preview:self.test];
-    
-//    [self.model preview:self.view];
     [self.model updateFrame:self.test];
 }
 
@@ -135,26 +108,6 @@ RCT_REMAP_METHOD(onToggleStream,onToggleStreamWithResolver:(RCTPromiseResolveBlo
         resolve(@"关闭推流");
     }
 }
-
-RCT_EXPORT_METHOD(onPinch) {
-    NSLog(@"onPinch");
-//    [self.model pinch:self.pinchGesture.scale state:self.pinchGesture.state];
-}
-
-RCT_EXPORT_METHOD(onTap) {
-    NSLog(@"onTap");
-//    CGPoint point = [self.tapGesture locationInView:self.view];
-//    point.x /= self.view.frame.size.width;
-//    point.y /= self.view.frame.size.height;
-    
-//    [self.model setInterestPoint:point];
-}
-
-RCT_EXPORT_METHOD(onDoubleTap) {
-    NSLog(@"onDoubleTap");
-    [self.model zoomIn];
-}
-
 
 #pragma mark - VCSessionDelegate
 - (void) connectionStatusChanged: (VCSessionState) sessionState {

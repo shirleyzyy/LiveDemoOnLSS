@@ -21,7 +21,7 @@ RCT_EXPORT_MODULE()
     return @[@"EventReminder"];
 }
 
-//代理方法,todo:向JS发通知
+//代理方法,向JS发通知
 - (void)onReceived:(RCMessage *)message left:(int)nLeft object:(id)object{
     NSLog(@"进入onReceived %@ :%@",message.senderUserId,((RCTextMessage*)message.content).content);
     [self sendEventWithName:@"EventReminder"

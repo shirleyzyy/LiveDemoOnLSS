@@ -11,15 +11,11 @@
 #import "PlayerViewModel.h"
 #import <BDCloudMediaPlayer/BDCloudMediaPlayer.h>
 #import <AVFoundation/AVAudioSession.h>
-//#import <RongIMLib/RongIMLib.h>
-//#import <CommonCrypto/CommonDigest.h>
 #import "IMCloud.h"
 @interface ZYPlayerViewManager ()
 @property (nonatomic,strong) UIView *playView;
 @property (nonatomic,strong) ZYBackView *test;
 @property (nonatomic,strong) PlayerViewModel *viewModel;
-//@property (nonatomic,strong) RCUserInfo *loginUser;
-//@property(nonatomic, strong) BDCloudMediaPlayerController* player;
 @end
 
 @implementation ZYPlayerViewManager

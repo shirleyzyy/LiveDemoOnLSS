@@ -48,7 +48,7 @@ export default class PlayView extends Component {
         this.setState({
             dataSource:this.state.dataSource.cloneWithRows(arr)
         });
-        setTimeout(this.scrollToEnd,500);
+        // setTimeout(this.scrollToEnd,500);
         console.log('添加观察者');
         DeviceEventEmitter.addListener('im.onReceive', (data) => this.receiveMessage(data.userId , data.message));
     }
@@ -138,7 +138,7 @@ export default class PlayView extends Component {
         this.setState({
             dataSource:this.state.dataSource.cloneWithRows(arr)
         });
-        setTimeout(this.scrollToEnd,500);
+        // setTimeout(this.scrollToEnd,500);
     }
 
     clickSend(){
@@ -148,7 +148,7 @@ export default class PlayView extends Component {
             dataSource:this.state.dataSource.cloneWithRows(arr)
         });
         this.refs.textInput.clear();
-        setTimeout(this.scrollToEnd,500);
+        // setTimeout(this.scrollToEnd,500);
         imModule.sendMessage(this.state.inputText.message);
     }
 

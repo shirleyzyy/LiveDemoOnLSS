@@ -17,7 +17,9 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
+import java.util.Random;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
@@ -84,7 +86,11 @@ public class IMCloud extends ReactContextBaseJavaModule {
 
     private void fakeLogin() {
         //TODO: 目前只管连接， 不管断开, demo
-        final UserInfo user = new UserInfo("001", "chad", null);
+        String userIDs[] = {"001","002","003","004","005","006"};
+        Random random = new Random();
+        String userID = userIDs[random.nextInt(6)];
+
+        final UserInfo user = new UserInfo(userID, null, null);
         Log.i(TAG, "login as :" + user.getName());
         getToken(user, new HttpUtil.OnResponse() {
             @Override

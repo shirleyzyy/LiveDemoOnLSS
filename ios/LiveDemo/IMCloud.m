@@ -45,8 +45,12 @@ RCT_EXPORT_METHOD(startRongYunIM){
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
     self.loginUser.name = @"Jack";
+    NSArray *userId = @[@"001",@"002",@"003",@"004",@"005",@"006"];
+    int a = arc4random() % 6;
+    NSString *randomUserId = [NSString stringWithFormat:@"userId=%@",userId[a]];
+
     //表单形式访问
-    NSData *ttt = [@"userId=123&name=Jack" dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *ttt = [randomUserId dataUsingEncoding:NSUTF8StringEncoding];
     
     request.HTTPBody = ttt;
     
